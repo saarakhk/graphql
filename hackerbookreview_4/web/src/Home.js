@@ -60,7 +60,6 @@ class Home extends Component {
       const { orderBy } = this.state;
       const variables = { orderBy };
       const result = await fetch({ query, variables });
-      // const books = result.data.books;
       const books = R.path(['data', 'books'], result);
       const reviews = R.path(['data', 'reviews'], result);
       const errorList = R.pathOr([], ['errors'], result);
