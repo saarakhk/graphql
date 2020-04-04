@@ -3,28 +3,34 @@ import { authorsByBookId } from './author';
 import { allReviews } from './review';
 
 const resolvers = {
-    Book: {
-        imageUrl: (book, { size }) => imageUrl(size, book.googleId),
-        authors: (book, args, context) => {
-            const { loaders } = context;
-            const { findAuthorsByBookIdsLoader } = loaders;
-            return findAuthorsByBookIdsLoader.load(book.id);
-        },
+  Book: {
+    imageUrl: (book, { size }) => imageUrl(size, book.googleId),
+    authors: (book, args, context) => {
+      const { loaders } = context;
+      const { findAuthorsByBookIdsLoader } = loaders;
+      return findAuthorsByBookIdsLoader.load(book.id);
     },
-    Review: {
-        book: (review, args, context) => { 
-            const { loaders } = context;
-            const { findBooksByIdsLoader } = loaders;
-            return findBooksByIdsLoader.load(review.bookId);
-            // findBookById(review.bookId)
-        }
+  },
+  Review: {
+    book: (review, args, context) => {
+      const { loaders } = context;
+      const { findBooksByIdsLoader } = loaders;
+      return findBooksByIdsLoader.load(review.bookId);
     },
-    Query: {
-        books: () => {
-            return allBooks();
-        },
-        reviews: () => allReviews(),
+    user: (review, args, context) => {
+      const { loaders } = context;
+      const { findUsersByIdsLoader } = loaders;
+      return findUsersByIdsLoader.load(review.userId);
     },
+  },
+  Query: {
+    books: (root, args) => {
+      return allBooks(args);
+    },
+    reviews: (root, args) => {
+      return allReviews(args);
+    },
+  },
 };
 
 export default resolvers;
