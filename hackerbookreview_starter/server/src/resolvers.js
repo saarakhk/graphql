@@ -1,5 +1,6 @@
 import { allBooks, imageUrl } from './book';
 import { authorsByBookId } from './author';
+import { allReviews } from './review';
 
 const resolvers = {
     Book: {
@@ -8,13 +9,13 @@ const resolvers = {
             const { loaders } = context;
             const { findAuthorsByBookIdsLoader } = loaders;
             return findAuthorsByBookIdsLoader.load(book.id);
-            // authorsByBookId(book.id)
         },
     },
     Query: {
         books: () => {
             return allBooks();
         },
+        reviews: () => allBooks(),
     },
 };
 
