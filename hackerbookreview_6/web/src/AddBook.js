@@ -23,6 +23,14 @@ query SearchBook($query: String!) {
 
 `;
 
+const createBookMutation = `
+mutation CreateBook($googleBookId: ID!) {
+  createBook(googleBookId: $googleBookId) {
+    id
+  }
+}
+`;
+
 class AddBook extends Component {
   state = {
     term: '',
@@ -52,8 +60,11 @@ class AddBook extends Component {
   addBook = async googleBookId => {
     try {
       // TODO: add mutation to add book using graphql
-      const redirectBookId = 1;
-      const errors = [];
+      const variables = { googleBookId };
+      const result = await fetch({ query: createBookMutation, variables });
+      const redirectBookId = path(['data', 'createBook', 'id'], result);
+      const errorList = pathOr([], ['errors'], result);
+      const errors = map(error => error.message, errorList);
       this.setState({ redirectBookId, errors });
     } catch (err) {
       this.setState({ errors: [err.message] });
