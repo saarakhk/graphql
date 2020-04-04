@@ -5,7 +5,7 @@ import query from './db';
 export async function findAuthorsByBookIds(ids) {
     const sql = `
     select
-    hb.author.*
+    hb.author.*,
     hb.book_author.book_id
     from hb.author inner join hb.book_author
         on hb.author.id = hb.book_author.author_id
